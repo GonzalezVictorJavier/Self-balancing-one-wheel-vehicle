@@ -1,3 +1,4 @@
+
   //#include <TimerOne.h>
 
 // I2C device class (I2Cdev) demonstration Arduino sketch for MPU6050 class using DMP (MotionApps v2.0)
@@ -130,7 +131,7 @@ float anguloAnterior = 0;
   //_____Seteo de valores para el giróscopo___________________________  
     #define dutyFreno 10.
     #define anguloMuerto 0
-    #define valorEsperado -10.
+    #define valorEsperado 0.
     #define errorMaximo 18
   //_____Seteo PWM____________________________________________________
     #define resolucionPWM 150
@@ -402,7 +403,7 @@ void calcularDuty(float medicionZ,float medicionX,float medicionY, VectorInt16 a
        analogWrite(clU1,  255);  
        analogWrite(clU2 ,0);    
        analogWrite(sdU1, (uint8_t) abs(duty));  
-       analogWrite(sdU2 ,(uint8_t) abs(duty) );    
+       analogWrite(sdU2 ,255 );    
      }
     //===============================================================================
     //==============Si el Duty es positivo, va para el otro==========================
@@ -412,7 +413,7 @@ void calcularDuty(float medicionZ,float medicionX,float medicionY, VectorInt16 a
        analogWrite(clU2, 255);  
        analogWrite(clU1 ,0);
        analogWrite(sdU2, (uint8_t) abs(duty));  
-       analogWrite(sdU1 ,(uint8_t) abs(duty));
+       analogWrite(sdU1 ,255);
      }
    }
 
