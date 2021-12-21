@@ -1,4 +1,3 @@
-
   //#include <TimerOne.h>
 
 // I2C device class (I2Cdev) demonstration Arduino sketch for MPU6050 class using DMP (MotionApps v2.0)
@@ -127,14 +126,14 @@ float anguloAnterior = 0;
   //_____Lo que tiene q ver con el modelo resorte-amortiguador________
     #define ohmega 400.
     #define epsilon 15.
-    #define dutyDerivConst 0.0013//0.0025
+    #define dutyDerivConst 0.0025
   //_____Seteo de valores para el giróscopo___________________________  
     #define dutyFreno 10.
     #define anguloMuerto 0
-    #define valorEsperado 0.
+    #define valorEsperado -10.
     #define errorMaximo 18
   //_____Seteo PWM____________________________________________________
-    #define resolucionPWM 250
+    #define resolucionPWM 150
 
 //==================================================================
 //=======Cosas útiles para el driver================================
@@ -331,16 +330,16 @@ void loop() {
             mpu.dmpGetGravity(&gravity, &q);
             mpu.dmpGetLinearAccel(&aaReal, &aa, &gravity);                     //Adquiere la aceleración lineal, no se si esto no esta al pedo.. habria q probarlo porq mepa q antes usabamos esta y despues terminamos usando la de abajo nomas q es la aceleracion angular sobre x. 
             mpu.getRotation(&gx, &gy, &gz);                                    //Tomamos todas las aceleraciones angulares.
-            calcularDuty(ypr[0] * 180/M_PI,ypr[1] * 180/M_PI,ypr[2] * 180/M_PI, aaReal,gx);  //LLamamos a la función que calcula y controla el duty... ????Ver q hay algunos parámetros q se pasn al pedo.. solo para graficar   
+            calcularDuty(ypr[0] * 180/M_PI,ypr[1] * 180/M_PI,ypr[2] * 180/M_PI, aaReal,gz);  //LLamamos a la función que calcula y controla el duty... ????Ver q hay algunos parámetros q se pasn al pedo.. solo para graficar   
           #endif
 
     }
 }
 
-void calcularDuty(float medicionZ,float medicionX,float medicionY, VectorInt16 aceleracion ,int16_t accRotX){  
+void calcularDuty(float medicionZ,float medicionX,float medicionY, VectorInt16 aceleracion ,int16_t accRotZ){  
   //=============Cálculo del Duty con los valores sensados========================== 
-  float medicionCentrada = medicionY - valorEsperado;                                    //Ubica la medicion en el centro de las mediciones con el valorEsperado en 0  
-  float dutyDeriv =   ohmega * medicionCentrada - aceleracion.y + epsilon * accRotX;     //Ecuación que modela el sistema con el resorte-amortiguador... Devuelve la derivada del duty 
+  float medicionCentrada = medicionX - valorEsperado;                                    //Ubica la medicion en el centro de las mediciones con el valorEsperado en 0  
+  float dutyDeriv =   ohmega * medicionCentrada - aceleracion.x + epsilon * accRotZ;     //Ecuación que modela el sistema con el resorte-amortiguador... Devuelve la derivada del duty 
   //================================================================================
   //=============Si el sensor se va a 0, el duty va a 0 y se frena el motor=========  
   if(flagMotorEncendido == true)
