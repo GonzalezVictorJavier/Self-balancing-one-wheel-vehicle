@@ -127,14 +127,14 @@ float anguloAnterior = 0;
   //_____Lo que tiene q ver con el modelo resorte-amortiguador________
     #define ohmega 400.
     #define epsilon 15.
-    #define dutyDerivConst 0.0025
+    #define dutyDerivConst 0.0013//0.0025
   //_____Seteo de valores para el giróscopo___________________________  
     #define dutyFreno 10.
     #define anguloMuerto 0
     #define valorEsperado 0.
     #define errorMaximo 18
   //_____Seteo PWM____________________________________________________
-    #define resolucionPWM 150
+    #define resolucionPWM 250
 
 //==================================================================
 //=======Cosas útiles para el driver================================
